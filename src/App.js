@@ -3,7 +3,6 @@ import { View, Text } from 'react-native';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import firebase from 'firebase';
-
 import reducers from './reducers';
 import LoginForm from './components/LoginForm';
 
