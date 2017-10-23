@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Picker, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { employeeUpdate } from '../actions';
 import { Button, Card, CardSection, Input } from './common';
@@ -9,7 +10,7 @@ class EmployeeCreate extends Component {
       <Card>
         <CardSection>
           <Input
-            label="name"
+            label="Name"
             onChangeText={value => this.props.employeeUpdate({ prop: 'name', value })}
             placeholder="Jane"
             value={this.props.name}
@@ -18,14 +19,27 @@ class EmployeeCreate extends Component {
 
         <CardSection>
           <Input
-            label="phone"
+            label="Phone"
             onChangeText={value => this.props.employeeUpdate({ prop: 'phone', value })}
             placeholder="555-5555"
             value={this.props.phone}
           />
         </CardSection>
 
-        <CardSection>
+        <CardSection style={{ flexDirection: 'column' }}>
+          <Text style={styles.pickerTextStyle}>Shift</Text>
+          <Picker
+            onValueChange={value => this.props.employeeUpdate({ prop: 'shift', value })}
+            selectedValue={this.props.shift}
+          >
+            <Picker.Item label="Monday" value="Monday" />
+            <Picker.Item label="Tuesday" value="Tuesday" />
+            <Picker.Item label="Wednesday" value="Wednesday" />
+            <Picker.Item label="Thursday" value="Thursday" />
+            <Picker.Item label="Friday" value="Friday" />
+            <Picker.Item label="Saturday" value="Saturday" />
+            <Picker.Item label="Sunday" value="Sunday" />
+          </Picker>
         </CardSection>
 
         <CardSection>
@@ -38,9 +52,16 @@ class EmployeeCreate extends Component {
   }
 }
 
+const styles = {
+  pickerTextStyle: {
+    fontSize: 18,
+    paddingLeft: 20,
+  }
+};
+
 const mapStateToProps = (state) => {
   const { name, phone, shift } = state.employeeForm;
   return { name, phone, shift };
-}
+};
 
 export default connect(mapStateToProps, { employeeUpdate })(EmployeeCreate);
