@@ -1,4 +1,5 @@
 export const EMAIL_CHANGED = 'email_changed';
+export const EMPLOYEE_CREATE = 'employee_create';
 export const EMPLOYEE_UPDATE = 'employee_update';
 export const PASSWORD_CHANGED = 'password_changed';
 export const LOGIN_USER = 'login_user';
