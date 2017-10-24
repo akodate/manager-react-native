@@ -3,20 +3,32 @@ import { connect } from 'react-redux';
 import Communications from 'react-native-communications';
 import _ from 'lodash';
 import EmployeeForm from './EmployeeForm';
-import { employeeSave, employeeUpdate } from '../actions';
-import { Card, CardSection, Button } from './common';
+import { employeeDelete, employeeSave, employeeUpdate } from '../actions';
+import { Card, CardSection, Button, Confirm } from './common';
 
 class EmployeeEdit extends Component {
+  state = { showModal: false };
+
   componentWillMount() {
     _.each(this.props.employee, (value, prop) => {
       this.props.employeeUpdate({ prop, value });
     });
   }
 
+  onAccept() {
+    const { uid } = this.props.employee;
+
+    this.props.employeeDelete({ uid });
+  }
+
   onButtonPress() {
     const { name, phone, shift } = this.props;
 
     this.props.employeeSave({ name, phone, shift, uid: this.props.employee.uid });
+  }
+
+  onDecline() {
+    this.setState({ showModal: false });
   }
 
   onTextPress() {
@@ -40,6 +52,20 @@ class EmployeeEdit extends Component {
             Text Schedule
           </Button>
         </CardSection>
+
+        <CardSection>
+          <Button onPress={() => this.setState({ showModal: !this.state.showModal })}>
+            Fire Employee
+          </Button>
+        </CardSection>
+
+        <Confirm 
+          onAccept={this.onAccept.bind(this)}
+          onDecline={this.onDecline.bind(this)}
+          visible={this.state.showModal}
+        >
+          Are you sure you want to delete this?
+        </Confirm>
       </Card>
     );
   }
@@ -51,4 +77,8 @@ const mapStateToProps = (state) => {
   return { name, phone, shift };
 };
 
-export default connect(mapStateToProps, { employeeSave, employeeUpdate })(EmployeeEdit);
+export default connect(mapStateToProps, { 
+  employeeDelete, 
+  employeeSave, 
+  employeeUpdate 
+})(EmployeeEdit);
